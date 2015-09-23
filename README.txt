@@ -1,4 +1,7 @@
 dsscli allow to import and export repositories, types, folders and/our documents to and from DSS. The command is accessible from the bin folder.
+in order to install dsscli :
+   gradlew build
+   (or gradle if gradle is already installed)
 
 usage:dsscli [-cmd admin command] [-com communication mode] [-host hostname] [-port portNumber] [-usr user] [-pwd password] [-trace trace level] fileName
  -cmd : admin command - (default)export (export only types and repositories without folders and docs), import (import types and repositories), exportAll (export types, repositories, folders, documents and attached files), importAll (import types, repositories, folders and documents) 
