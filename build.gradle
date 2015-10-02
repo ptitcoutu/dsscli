@@ -65,7 +65,7 @@ dependencies {
 
 jar {
     manifest {
-        attributes ('Main-Class': 'eu.w4.dsscli.cmd.Transfer',
+        attributes ('Main-Class': 'eu.w4.dsscli.cmd.CLI',
           'Class-Path': '. '+configurations.compile.collect { it.toURI().toString() }.join(' '))
     }
 }
