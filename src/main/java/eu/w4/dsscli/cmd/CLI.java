@@ -1,14 +1,10 @@
 package eu.w4.dsscli.cmd;
 
 import java.io.PrintStream;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -38,16 +34,16 @@ public class CLI {
 			showUsage("please precise command to launch");
 		}
 		String cmd = args[0];
-		if("version".equals(cmd)) {
+		if ("version".equals(cmd)) {
 			System.out.println("DSS CLI 2.0 - Apache Licence");
 			return;
 		}
-		if("help".equals(cmd)) {
+		if ("help".equals(cmd)) {
 			displayHelp(System.out);
 			return;
-		}		
+		}
 		if (!jobMap.containsKey(cmd)) {
-			showUsage("invalide command "+cmd);
+			showUsage("invalide command " + cmd);
 		}
 		Job job = jobMap.get(cmd);
 		List<Option> options = job.getAvailableOptions();
@@ -55,13 +51,12 @@ public class CLI {
 		for (Option option : options) {
 			optionMap.put(option.name, option);
 		}
-
 		int argsLength = args.length;
 		for (int i = 1; i < argsLength; i += 2) {
 			String optName = args[i];
 			if (i == (argsLength - 1)) {
 				if (optName.startsWith("-")) {
-					showUsage("invalid option "+optName);
+					showUsage("invalid option " + optName);
 				} else {
 					job.setFileName(optName);
 				}
@@ -71,7 +66,7 @@ public class CLI {
 			if (optionMap.containsKey(optName)) {
 				optionMap.get(optName).setValue(optionValue);
 			} else {
-				showUsage("invalid option "+optName);
+				showUsage("invalid option " + optName);
 			}
 		}
 		try {
@@ -96,15 +91,14 @@ public class CLI {
 	static public void displayHelp(PrintStream out) {
 		out.println(
 				"usage:dsscli <command> [-host hostname] [-port portNumber] [-usr user] [-pwd password] [-trace trace level] [specific command options] fileName");
-		out.println("<command> : command to launch or help to display this message or version to have version number of the DSS CLI");
+		out.println(
+				"<command> : command to launch or help to display this message or version to have version number of the DSS CLI");
 		out.println(" -host : hostname without port number");
 		out.println(" -port : tcp port number");
 		out.println(" -usr  : w4 user login");
 		out.println(" -pwd  : w4 user password");
-		out.println(
-				" -trace : trace level - (default) OFF, ALL, CONFIG, FINE, FINER, FINEST, INFO, SEVERE, WARNING");
+		out.println(" -trace : trace level - (default) OFF, ALL, CONFIG, FINE, FINER, FINEST, INFO, SEVERE, WARNING");
 		out.println("available commands are : ");
-		Set<Entry<String, Job>> jobEntrySet = jobMap.entrySet();
 		String[] cmdNames = jobMap.keySet().toArray(new String[0]);
 		Arrays.sort(cmdNames);
 		for (String cmdName : cmdNames) {
@@ -117,6 +111,6 @@ public class CLI {
 				out.println("  " + option.name + " : " + option.description);
 			}
 		}
-		
+
 	}
 }
