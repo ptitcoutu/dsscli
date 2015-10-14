@@ -243,37 +243,39 @@ abstract public class TransferJob extends AbstractJob {
 		if (existingPropertiesDef != null) {
 			existingPropDefMap.putAll(existingPropertiesDef);
 		}
-		for (ItemPropertyDef impPropertyDef : importedPropertiesDef) {
-			String valueType = impPropertyDef.valueType;
-			String defaultValue = impPropertyDef.defaultValue;
-			String propName = impPropertyDef.name;
-			PropertyDefinition propDef = dssObjFactory.newPropertyDefinition();
-			PropertyDefinitionDataType propDataType = DefaultPropertyDefinitionDataType.valueOf(valueType);
-			propDef.setDataType(propDataType);
-			propDef.setDefaultValue(computeStringValue(defaultValue, propDataType));
-			propDef.setHidden(impPropertyDef.hidden);
-			propDef.setMandatory(impPropertyDef.mandatory);
-			propDef.setName(propName);
-			propDef.setReadOnly(impPropertyDef.readonly);
-			res.add(propDef);
-			if (existingPropertiesDef != null && existingPropDefMap.containsKey(propName)) {
-				// check existing property def
-				boolean hasDiff = false;
-				PropertyDefinition existingPropDef = existingPropDefMap.get(propName);
-				hasDiff = equals(existingPropDef, propDef);
-				if (hasDiff) {
-					dssService.modifyPropertyDefinition(usrPrincipal, existingPropDef.getId(), typeId, propName,
-							propDataType, propDef.isMandatory(), propDef.isReadOnly(), propDef.isHidden(),
-							propDef.getDefaultValue());
-					nbChange[0]++;
-				}
-				existingPropDefMap.remove(propName);
-			} else {
-				// add new property def
-				dssService.addPropertyDefinition(usrPrincipal, typeId, propName, propDataType, propDef.isMandatory(),
-						propDef.isReadOnly(), propDef.isHidden(), propDef.getDefaultValue());
-				if (nbChange != null) {
-					nbChange[0]++;
+		if (importedPropertiesDef != null) {
+			for (ItemPropertyDef impPropertyDef : importedPropertiesDef) {
+				String valueType = impPropertyDef.valueType;
+				String defaultValue = impPropertyDef.defaultValue;
+				String propName = impPropertyDef.name;
+				PropertyDefinition propDef = dssObjFactory.newPropertyDefinition();
+				PropertyDefinitionDataType propDataType = DefaultPropertyDefinitionDataType.valueOf(valueType);
+				propDef.setDataType(propDataType);
+				propDef.setDefaultValue(computeStringValue(defaultValue, propDataType));
+				propDef.setHidden(impPropertyDef.hidden);
+				propDef.setMandatory(impPropertyDef.mandatory);
+				propDef.setName(propName);
+				propDef.setReadOnly(impPropertyDef.readonly);
+				res.add(propDef);
+				if (existingPropertiesDef != null && existingPropDefMap.containsKey(propName)) {
+					// check existing property def
+					boolean hasDiff = false;
+					PropertyDefinition existingPropDef = existingPropDefMap.get(propName);
+					hasDiff = equals(existingPropDef, propDef);
+					if (hasDiff) {
+						dssService.modifyPropertyDefinition(usrPrincipal, existingPropDef.getId(), typeId, propName,
+								propDataType, propDef.isMandatory(), propDef.isReadOnly(), propDef.isHidden(),
+								propDef.getDefaultValue());
+						nbChange[0]++;
+					}
+					existingPropDefMap.remove(propName);
+				} else {
+					// add new property def
+					dssService.addPropertyDefinition(usrPrincipal, typeId, propName, propDataType,
+							propDef.isMandatory(), propDef.isReadOnly(), propDef.isHidden(), propDef.getDefaultValue());
+					if (nbChange != null) {
+						nbChange[0]++;
+					}
 				}
 			}
 		}

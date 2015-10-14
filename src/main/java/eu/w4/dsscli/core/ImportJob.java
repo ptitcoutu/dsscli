@@ -152,7 +152,7 @@ public class ImportJob extends TransferJob {
 		}
 		TypeIdentifier newTypeId = dssService.createType(usrPrincipal,
 				(newTypeParent == null) ? null : newTypeParent.getIdentifier(), itPrefix, itName,
-				DefaultContentType.valueOf(itContentType), DefaultHasContentType.valueOf(itHasContentType),
+				(itContentType == null || itContentType.isEmpty())?null:DefaultContentType.valueOf(itContentType), (itHasContentType==null || itHasContentType.isEmpty())?null:DefaultHasContentType.valueOf(itHasContentType),
 				DefaultTypeType.valueOf(itType), null);
 		TypeAttachment typeAtt = dssObjFactory.newTypeAttachment();
 		typeAtt.setParentAttached(true);
